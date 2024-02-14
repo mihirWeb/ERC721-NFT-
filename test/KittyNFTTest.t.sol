@@ -10,6 +10,9 @@ contract KittyNFTTes is Test{
     DeployNFT public deployNFT;
     KittyNFT public kittyNFT;
 
+    address private User = makeAddr("user");
+    string constant CAT = "../nftImages/Blackkitty.jpeg";
+
     function setUp() external{
 
         deployNFT = new DeployNFT();        
@@ -35,14 +38,22 @@ contract KittyNFTTes is Test{
 
         uint256 totalMints = 6;
         for(uint256 i=0; i<totalMints; i++){
-            address Person = makeAddr("person");
-            vm.prank(Person);
-            kittyNFT.mintNFT("../nftImages/Blackkitty.jpeg");
+            vm.prank(User);
+            kittyNFT.mintNFT(CAT);
         }
 
         uint256 expectedTokenCounter = totalMints;
         uint256 actualTokenCounter = kittyNFT.getTokenCounter();
 
         assertEq(expectedTokenCounter, actualTokenCounter);
+    }
+
+    function testCanMintAndHaveBalance() public{
+        vm.prank(User);
+        kittyNFT.mintNFT(CAT);
+
+        assert(kittyNFT.balanceOf(User) == 1);
+
+        assert(keccak256(abi.encodePacked(kittyNFT.tokenURI(0))) == keccak256(abi.encodePacked(CAT)));
     }
 }

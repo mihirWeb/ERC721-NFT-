@@ -16,18 +16,25 @@ contract KittyNFT is ERC721 {
     }
 
     function mintNFT(string memory tokenUri) public returns(uint256){
-        s_tokenCounter++;
-
+        
         _safeMint(msg.sender, s_tokenCounter); 
         // _safeMint is a function in openzeppelin that defines 
         // the ownership of NFT to the address given with the token ID after its creation
 
         s_tokenIdToTokenURI[s_tokenCounter] = tokenUri;
+        s_tokenCounter++;
+
         return s_tokenCounter;
     }
 
     function tokenURI(uint256 tokenId) view override public returns(string memory){
         return s_tokenIdToTokenURI[tokenId];
+    }
+
+    ///// GETTER FUNCTIONS
+
+    function getTokenCounter() view external returns(uint256){
+        return s_tokenCounter;
     }
 
 }

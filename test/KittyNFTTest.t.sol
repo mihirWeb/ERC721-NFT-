@@ -23,10 +23,26 @@ contract KittyNFTTes is Test{
         assertEq(expectedName, actualName);
     }
 
-    function testSymbolOfNft() public{
+    function testSymbolOfNft() view public{
         string memory expectedSymbol = "Cat";
         string memory actualSymbol = kittyNFT.symbol();
 
-        assertEq(expectedSymbol, actualSymbol);
+        assert(keccak256(abi.encodePacked(expectedSymbol)) ==  keccak256(abi.encodePacked(actualSymbol)));
+    }
+
+    function testTokenCounterIncrement() public{
+
+
+        uint256 totalMints = 6;
+        for(uint256 i=0; i<totalMints; i++){
+            address Person = makeAddr("person");
+            vm.prank(Person);
+            kittyNFT.mintNFT("../nftImages/Blackkitty.jpeg");
+        }
+
+        uint256 expectedTokenCounter = totalMints;
+        uint256 actualTokenCounter = kittyNFT.getTokenCounter();
+
+        assertEq(expectedTokenCounter, actualTokenCounter);
     }
 }

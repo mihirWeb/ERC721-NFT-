@@ -6,6 +6,7 @@ import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 contract KittyNFT is ERC721 {
 
     uint256 private s_tokenCounter;
+    
 
     mapping(uint256 => string) private s_tokenIdToTokenURI;
     
